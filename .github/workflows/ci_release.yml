@@ -3,7 +3,7 @@ name: Build Wheels
 on:
   release:
     types: [published]
-    
+  push:
 #   push:
 #     branches: [main]
 #   create:
