@@ -47,7 +47,8 @@ jobs:
         env:
           # CIBW_TEST_REQUIRES: "pytest"
           # CIBW_TEST_COMMAND: "pytest {package}/test"
-          CIBW_ARCHS_LINUX: auto aarch64
+          CIBW_BUILD: cp39-manylinux_x86_64
+          CIBW_ARCHS_LINUX: x86_64
           CIBW_ARCHS_MACOS: x86_64 universal2 arm64
           CIBW_SKIP: pp*
 
