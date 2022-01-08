@@ -41,6 +41,7 @@ jobs:
         with:
           python-version: 3.9
           cache: "pip"
+        run: pip install requirements.txt
 
       - name: Build
         uses: pypa/cibuildwheel@v2.2.2
