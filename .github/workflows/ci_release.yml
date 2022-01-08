@@ -41,6 +41,8 @@ jobs:
         with:
           python-version: 3.9
           cache: "pip"
+        
+      - name: Install dependencies
         run: pip install requirements.txt
 
       - name: Build
