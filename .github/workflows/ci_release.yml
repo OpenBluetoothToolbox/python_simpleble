@@ -43,7 +43,7 @@ jobs:
           cache: "pip"
         
       - name: Install dependencies
-        run: pip install requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Build
         uses: pypa/cibuildwheel@v2.2.2
