@@ -1,18 +1,14 @@
-name: Build Wheels
+name: Release
 
 on:
   release:
     types: [published]
-    
-#   push:
-#     branches: [main]
-#   create:
 
 jobs:
   build_wheels:
     strategy:
       matrix:
-        os: [ubuntu-20.04, windows-2019, macos-10.15]
+        os: [ubuntu-20.04] # , windows-2019, macos-10.15
     runs-on: ${{ matrix.os }}
     name: Build wheels on ${{ matrix.os }}
 
@@ -20,29 +16,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set up QEMU
-        if: runner.os == 'Linux'
-        uses: docker/setup-qemu-action@v1
-        with:
-          platforms: arm64
+      # - name: Set up QEMU
+      #   if: runner.os == 'Linux'
+      #   uses: docker/setup-qemu-action@v1
+      #   with:
+      #     platforms: arm64
 
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
           cache: "pip"
+        
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
-      - name: Prepare
-        shell: bash
-        run: |
-          pip install -r requirements.txt
-          make cython
       - name: Build
         uses: pypa/cibuildwheel@v2.2.2
         env:
           # CIBW_TEST_REQUIRES: "pytest"
           # CIBW_TEST_COMMAND: "pytest {package}/test"
-          CIBW_ARCHS_LINUX: auto aarch64
+          CIBW_BUILD: cp39-manylinux_x86_64
+          CIBW_ARCHS_LINUX: x86_64
           CIBW_ARCHS_MACOS: x86_64 universal2 arm64
           CIBW_SKIP: pp*
 
@@ -51,3 +46,13 @@ jobs:
         with:
           name: Wheels
           path: wheelhouse
+
+      # Publish package
+      - name: Publish Packages
+        #if: github.event.inputs.publish == 'true'
+        run: |
+          echo "Username: " $TWINE_USERNAME
+          twine upload --repository testpypi --skip-existing wheelhouse/*.whl --verbose
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USER }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
