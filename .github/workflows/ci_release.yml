@@ -1,22 +1,8 @@
-name: Build Wheels
+name: Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: New Version
-        default: ""
-        required: true
-      publish:
-        description: Make Public(true or false)
-        default: "false"
-        required: true
   release:
     types: [published]
-  push:
-#   push:
-#     branches: [main]
-#   create:
 
 jobs:
   build_wheels:
