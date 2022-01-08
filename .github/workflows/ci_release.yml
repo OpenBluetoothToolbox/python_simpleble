@@ -65,7 +65,7 @@ jobs:
       - name: Publish Packages
         #if: github.event.inputs.publish == 'true'
         run: 
-          twine upload --repository testpypi --skip-existing wheelhouse/*.whl --user $env:PYPI_USER --password $env:PYPI_PASSWORD
+          twine upload --repository testpypi --skip-existing wheelhouse/*.whl
         env:
-          PYPI_USER: $ {{ secrets.PYPI_USER }}
-          PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+          TWINE_USERNAME: $ {{ secrets.PYPI_USER }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
