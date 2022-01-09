@@ -35,7 +35,7 @@ jobs:
       - name: Build wheel
         uses: pypa/cibuildwheel@v2.3.1
         env:
-          CIBW_BEFORE_ALL: "apt install libdbus1-dev"
+          CIBW_BEFORE_ALL: "apt-get install libdbus1-dev"
           # CIBW_TEST_REQUIRES: "pytest"
           # CIBW_TEST_COMMAND: "pytest {package}/test"
           CIBW_BUILD: cp39-manylinux_x86_64
