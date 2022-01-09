@@ -120,13 +120,13 @@ class CMakeBuild(build_ext):
 # The information here can also be placed in setup.cfg - better separation of
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
-    name="simpleble",
-    version="0.0.1",
+    name="simplepyble",
+    version="0.0.1", # ! Ensure it matches the version in CMakeLists.txt
     author="Kevin Dewald",
     author_email="kevin@dewald.me",
     description="The ultimate fully-fledged cross-platform BLE library, designed for simplicity and ease of use.",
     long_description="",
-    ext_modules=[CMakeExtension("simpleble")],
+    ext_modules=[CMakeExtension("simplepyble")],
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False,
     extras_require={},

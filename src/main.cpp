@@ -1,45 +1,16 @@
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
-#define STRINGIFY(x) #x
-#define MACRO_STRINGIFY(x) STRINGIFY(x)
-
-int add(int i, int j) {
-    return i + j;
-}
+#include "simpleble/Adapter.h"
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(simpleble, m) {
-#ifdef VERSION_INFO
-    m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
-#else
-    m.attr("__version__") = "dev";
-#endif
+PYBIND11_MODULE(simplepyble, m) {
+    m.attr("__version__") = "0.0.1";
 
-    m.doc() = R"pbdoc(
-        Pybind11 example plugin
-        -----------------------
-
-        .. currentmodule:: cmake_example
-
-        .. autosummary::
-           :toctree: _generate
-
-           add
-           subtract
-    )pbdoc";
-
-    m.def("add", &add, R"pbdoc(
-        Add two numbers
-
-        Some other explanation about the add function.
-    )pbdoc");
-
-    m.def("subtract", [](int i, int j) { return i - j; }, R"pbdoc(
-        Subtract two numbers
-
-        Some other explanation about the subtract function.
-    )pbdoc");
-
-
+    // TODO: Add __str__ and __repr__ methods to Adapter class
+    py::class_<SimpleBLE::Adapter>(m, "Adapter")
+        .def("get_adapters", &SimpleBLE::Adapter::get_adapters)
+        .def("identifier", &SimpleBLE::Adapter::identifier)
+        .def("address", &SimpleBLE::Adapter::address);
 }
