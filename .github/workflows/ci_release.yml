@@ -35,7 +35,7 @@ jobs:
       - name: Build wheel
         uses: pypa/cibuildwheel@v2.3.1
         env:
-          CIBW_BEFORE_ALL_LINUX: "yum install dbus-devel"
+          CIBW_BEFORE_ALL_LINUX: "yum install -y dbus-devel"
           # CIBW_TEST_REQUIRES: "pytest"
           # CIBW_TEST_COMMAND: "pytest {package}/test"
           CIBW_BUILD: cp39-manylinux_x86_64
