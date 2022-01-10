@@ -33,13 +33,12 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Build wheel
-        #uses: pypa/cibuildwheel@v2.3.1
-        run: python -m cibuildwheel --output-dir wheelhouse
+        uses: pypa/cibuildwheel@v2.3.1
         env:
-          CIBW_MANYLINUX_X86_64_IMAGE: manylinux2_24
-          CIBW_MANYLINUX_I686_IMAGE: manylinux2_24
-          CIBW_MANYLINUX_PYPY_X86_64_IMAGE: manylinux2_24
-          CIBW_MANYLINUX_PYPY_I686_IMAGE: manylinux2_24
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_24
+          CIBW_MANYLINUX_I686_IMAGE: manylinux_2_24
+          CIBW_MANYLINUX_PYPY_X86_64_IMAGE: manylinux_2_24
+          CIBW_MANYLINUX_PYPY_I686_IMAGE: manylinux_2_24
           CIBW_BEFORE_ALL_LINUX: "apt-get install -y libdbus1-dev"
           # CIBW_TEST_REQUIRES: "pytest"
           # CIBW_TEST_COMMAND: "pytest {package}/test"
