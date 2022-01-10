@@ -33,7 +33,8 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Build wheel
-        uses: pypa/cibuildwheel@v2.3.1
+        #uses: pypa/cibuildwheel@v2.3.1
+        run: python -m cibuildwheel --output-dir wheelhouse
         env:
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux2_24
           CIBW_MANYLINUX_I686_IMAGE: manylinux2_24
