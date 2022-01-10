@@ -1,9 +1,10 @@
-name: Release
+name: Test Release
 
 on:
+  push:
   workflow_dispatch:
-  release:
-    types: [published]
+  # release:
+  #   types: [published]
 
 jobs:
   build_wheels:
