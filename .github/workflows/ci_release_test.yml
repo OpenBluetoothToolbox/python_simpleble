@@ -1,6 +1,7 @@
-name: Release
+name: Test Release
 
 on:
+  push:
   workflow_dispatch:
 
 jobs:
@@ -46,7 +47,7 @@ jobs:
           path: wheelhouse
 
       - name: Publish packages
-        run: twine upload wheelhouse/*.whl --verbose
+        run: twine upload --repository testpypi --skip-existing wheelhouse/*.whl --verbose
         env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USER }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+          TWINE_USERNAME: ${{ secrets.TEST_PYPI_USER }}
+          TWINE_PASSWORD: ${{ secrets.TEST_PYPI_PASSWORD }}
