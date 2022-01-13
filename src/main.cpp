@@ -6,16 +6,6 @@
 
 namespace py = pybind11;
 
-#include <iostream>
-
-class PyPeripheral : public SimpleBLE::Peripheral {
-  public:
-    std::map<uint16_t, SimpleBLE::ByteArray> py_manufacturer_data() {
-        std::cout << "Here!" << std::endl;
-        return manufacturer_data();
-    }
-};
-
 PYBIND11_MODULE(simplepyble, m) {
     m.attr("__version__") = "0.0.1";
 
@@ -32,12 +22,25 @@ PYBIND11_MODULE(simplepyble, m) {
         .def("is_connected", &SimpleBLE::Peripheral::is_connected)
         .def("is_connectable", &SimpleBLE::Peripheral::is_connectable)
         .def("services", &SimpleBLE::Peripheral::services)
-        .def("manufacturer_data", [](SimpleBLE::Peripheral& p) {
-            std::map<uint16_t, py::bytes> ret;
-            for (auto& kv : p.manufacturer_data()) {
-                ret[kv.first] = py::bytes(kv.second);
-            }
-            return ret;
+        .def("manufacturer_data",
+             [](SimpleBLE::Peripheral& p) {
+                 std::map<uint16_t, py::bytes> ret;
+                 for (auto& kv : p.manufacturer_data()) {
+                     ret[kv.first] = py::bytes(kv.second);
+                 }
+                 return ret;
+             })
+        .def("read", &SimpleBLE::Peripheral::read)
+        .def("write_request", &SimpleBLE::Peripheral::write_request)
+        .def("write_command", &SimpleBLE::Peripheral::write_command)
+        .def("notify",
+             [](SimpleBLE::Peripheral& p, std::string service, std::string characteristic,
+                std::function<void(py::bytes payload)> cb) {
+                 p.notify(service, characteristic, [cb](SimpleBLE::ByteArray payload) { cb(py::bytes(payload)); });
+             })
+        .def("indicate", [](SimpleBLE::Peripheral& p, std::string service, std::string characteristic,
+                            std::function<void(py::bytes payload)> cb) {
+            p.indicate(service, characteristic, [cb](SimpleBLE::ByteArray payload) { cb(py::bytes(payload)); });
         });
 
     // TODO: Add __str__ and __repr__ methods to Adapter class
