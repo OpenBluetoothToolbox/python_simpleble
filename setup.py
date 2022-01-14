@@ -77,7 +77,6 @@ class CMakeBuild(build_ext):
                     pass
 
         else:
-
             # Single config generators are handled "normally"
             single_config = any(x in cmake_generator for x in {"NMake", "Ninja"})
 
@@ -95,11 +94,14 @@ class CMakeBuild(build_ext):
                 cmake_args += [f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{cfg.upper()}={extdir}"]
                 build_args += ["--config", cfg]
 
+            cmake_args += ["-DCMAKE_SYSTEM_VERSION=10.0.19041.0"]
+
         if sys.platform.startswith("darwin"):
             # Cross-compile support for macOS - respect ARCHFLAGS if set
             archs = re.findall(r"-arch (\S+)", os.environ.get("ARCHFLAGS", ""))
             if archs:
                 cmake_args += ["-DCMAKE_OSX_ARCHITECTURES={}".format(";".join(archs))]
+            cmake_args += ["-DCMAKE_OSX_DEPLOYMENT_TARGET=10.15"]
 
         # Set CMAKE_BUILD_PARALLEL_LEVEL to control the parallel build level
         # across all generators.
@@ -121,7 +123,7 @@ class CMakeBuild(build_ext):
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
     name="simplepyble",
-    version="0.0.2", # ! Ensure it matches the intended release version!
+    version="0.0.2",  # ! Ensure it matches the intended release version!
     author="Kevin Dewald",
     author_email="kevin@dewald.me",
     description="The ultimate fully-fledged cross-platform BLE library, designed for simplicity and ease of use.",
