@@ -3,6 +3,7 @@ import re
 import subprocess
 import pybind11
 import sys
+import pathlib
 
 from setuptools import Extension, setup
 from setuptools.command.build_ext import build_ext
@@ -77,7 +78,6 @@ class CMakeBuild(build_ext):
                     pass
 
         else:
-
             # Single config generators are handled "normally"
             single_config = any(x in cmake_generator for x in {"NMake", "Ninja"})
 
@@ -95,11 +95,14 @@ class CMakeBuild(build_ext):
                 cmake_args += [f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{cfg.upper()}={extdir}"]
                 build_args += ["--config", cfg]
 
+            cmake_args += ["-DCMAKE_SYSTEM_VERSION=10.0.19041.0"]
+
         if sys.platform.startswith("darwin"):
             # Cross-compile support for macOS - respect ARCHFLAGS if set
             archs = re.findall(r"-arch (\S+)", os.environ.get("ARCHFLAGS", ""))
             if archs:
                 cmake_args += ["-DCMAKE_OSX_ARCHITECTURES={}".format(";".join(archs))]
+            cmake_args += ["-DCMAKE_OSX_DEPLOYMENT_TARGET=10.15"]
 
         # Set CMAKE_BUILD_PARALLEL_LEVEL to control the parallel build level
         # across all generators.
@@ -117,15 +120,19 @@ class CMakeBuild(build_ext):
         subprocess.check_call(["cmake", "--build", "."] + build_args, cwd=self.build_temp)
 
 
+# Get the long description from the README file
+here = pathlib.Path(__file__).parent.resolve()
+long_description = (here / "README.md").read_text(encoding="utf-8")
+
 # The information here can also be placed in setup.cfg - better separation of
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
     name="simplepyble",
-    version="0.0.1", # ! Ensure it matches the version in CMakeLists.txt
+    version="0.0.2",  # ! Ensure it matches the intended release version!
     author="Kevin Dewald",
     author_email="kevin@dewald.me",
     description="The ultimate fully-fledged cross-platform BLE library, designed for simplicity and ease of use.",
-    long_description="",
+    long_description=long_description,
     ext_modules=[CMakeExtension("simplepyble")],
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False,
