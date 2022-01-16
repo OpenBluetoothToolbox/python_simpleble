@@ -3,6 +3,7 @@ import re
 import subprocess
 import pybind11
 import sys
+import pathlib
 
 from setuptools import Extension, setup
 from setuptools.command.build_ext import build_ext
@@ -119,6 +120,10 @@ class CMakeBuild(build_ext):
         subprocess.check_call(["cmake", "--build", "."] + build_args, cwd=self.build_temp)
 
 
+# Get the long description from the README file
+here = pathlib.Path(__file__).parent.resolve()
+long_description = (here / "README.md").read_text(encoding="utf-8")
+
 # The information here can also be placed in setup.cfg - better separation of
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
@@ -127,7 +132,7 @@ setup(
     author="Kevin Dewald",
     author_email="kevin@dewald.me",
     description="The ultimate fully-fledged cross-platform BLE library, designed for simplicity and ease of use.",
-    long_description="",
+    long_description=long_description,
     ext_modules=[CMakeExtension("simplepyble")],
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False,
