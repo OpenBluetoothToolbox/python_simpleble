@@ -37,7 +37,7 @@ jobs:
           CIBW_ARCHS_LINUX: x86_64 i686 aarch64
           CIBW_ARCHS_MACOS: x86_64 universal2 arm64
           CIBW_ARCHS_WINDOWS: AMD64 x86
-          CIBW_SKIP: "*musllinux_*"
+          CIBW_SKIP: "*musllinux_* pp*" 
 
       - name: Upload wheels
         uses: actions/upload-artifact@v1
