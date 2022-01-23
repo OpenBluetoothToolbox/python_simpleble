@@ -54,6 +54,7 @@ if __name__ == "__main__":
     content = input("Enter content to write: ")
 
     # Write the content to the characteristic
-    peripheral.write_request(service_uuid, characteristic_uuid, content)
+    # Note: `write_request` required the payload to be presented as a bytes object.
+    peripheral.write_request(service_uuid, characteristic_uuid, str.encode(content))
 
     peripheral.disconnect()

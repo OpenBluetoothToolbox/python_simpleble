@@ -31,8 +31,10 @@ PYBIND11_MODULE(simplepyble, m) {
                  return ret;
              })
         .def("read", &SimpleBLE::Peripheral::read)
-        .def("write_request", &SimpleBLE::Peripheral::write_request)
-        .def("write_command", &SimpleBLE::Peripheral::write_command)
+        .def("write_request", [](SimpleBLE::Peripheral& p, std::string service, std::string characteristic,
+                                 py::bytes payload) { p.write_request(service, characteristic, payload); })
+        .def("write_command", [](SimpleBLE::Peripheral& p, std::string service, std::string characteristic,
+                                 py::bytes payload) { p.write_command(service, characteristic, payload); })
         .def("notify",
              [](SimpleBLE::Peripheral& p, std::string service, std::string characteristic,
                 std::function<void(py::bytes payload)> cb) {
