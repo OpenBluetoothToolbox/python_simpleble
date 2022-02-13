@@ -133,7 +133,7 @@ setup(
     author_email="kevin@dewald.me",
     description="The ultimate fully-fledged cross-platform BLE library, designed for simplicity and ease of use.",
     long_description=long_description,
-    long_description_content_type='text/markdown'
+    long_description_content_type='text/markdown',
     ext_modules=[CMakeExtension("simplepyble")],
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False,
