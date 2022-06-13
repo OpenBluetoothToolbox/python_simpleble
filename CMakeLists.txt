@@ -9,7 +9,7 @@ project(python_simpleble)
 include(FetchContent)
 
 set(SIMPLEBLE_GIT_REPOSITORY "https://github.com/OpenBluetoothToolbox/SimpleBLE.git")
-set(SIMPLEBLE_GIT_TAG "main")
+set(SIMPLEBLE_GIT_TAG "v0.4.0")
 
 FetchContent_Declare(
     simpleble
